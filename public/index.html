@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>福州鳌峰学校</title>
+<script>history.scrollRestoration = 'manual';</script>
+<style>
+  :root {
+    --ink: #16181d;
+    --navy: #0e2a45;
+    --blue: #1c4e7a;
+    --line: #dcdcd6;
+    --bg: #f0efe9;
+    --paper: #fffefb;
+    --muted: #6d7278;
+    --serif: "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    --sans: "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(240, 239, 233, 0.92);
+    border-bottom: 1px solid rgba(20,28,40,.08);
+    box-shadow: 0 1px 0 rgba(20,28,40,.05), 0 4px 16px rgba(20,28,40,.06);
+  }
+  .nav-wrap {
+    max-width: 1200px; margin: 0 auto; padding: 0 32px;
+    height: 58px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    color: var(--navy); font-size: 16px; font-weight: 600; letter-spacing: .5px;
+  }
+  .logo-mark {
+    width: 30px; height: 30px; overflow: hidden;
+    background: #fff; border: 1px solid var(--line); flex: none;
+    border-radius: 50% !important;
+  }
+  .logo-mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .nav-badge { font-size: 12px; color: var(--muted); letter-spacing: 1px; }
+  .nav-right { display: flex; align-items: center; gap: 20px; }
+  .nav-item { font-size: 13px; color: var(--muted); letter-spacing: 1px; transition: color .2s ease; }
+  .nav-item:hover { color: var(--navy); }
+  .nav-item.active { color: var(--navy); font-weight: 600; box-shadow: inset 0 -2px 0 var(--navy); padding-bottom: 2px; }
+
+  .hero {
+    background: var(--navy);
+    color: #f2eee5;
+    padding: 88px 32px 80px;
+    border-bottom: 1px solid rgba(255,255,255,.12);
+  }
+  .hero-inner { max-width: 1200px; margin: 0 auto; }
+  .hero-tag {
+    font-size: 12px; letter-spacing: 4px;
+    color: rgba(242,238,229,.55);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(32px, 5.6vw, 58px);
+    font-weight: 700; letter-spacing: 4px; line-height: 1.2;
+    color: #fff;
+  }
+  .hero p {
+    margin-top: 16px; font-size: 14px;
+    color: rgba(242,238,229,.6); letter-spacing: 1px;
+  }
+  .hero .motto {
+    margin-top: 30px;
+    font-family: var(--serif);
+    font-size: 14px; letter-spacing: 6px;
+    color: rgba(242,238,229,.55);
+    border-top: 1px solid rgba(242,238,229,.18);
+    padding-top: 12px;
+    display: inline-block;
+  }
+
+  .row {
+    max-width: 1200px; margin: 0 auto;
+    padding: 64px 32px;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 48px;
+  }
+  .row-head { position: sticky; top: 80px; align-self: start; }
+  .row-title {
+    font-family: var(--serif);
+    font-size: 22px; font-weight: 700; color: var(--navy);
+    letter-spacing: 2px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--navy);
+  }
+  .row-sub {
+    margin-top: 10px; font-size: 13px; color: var(--muted);
+    letter-spacing: .5px; line-height: 1.6;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .stat-card {
+    padding: 32px 26px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 2px rgba(20,28,40,.04);
+    transition: transform .35s ease, box-shadow .35s ease;
+  }
+  .stat-card.wide { grid-column: span 2; }
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(20,28,40,.12), 0 2px 6px rgba(20,28,40,.06);
+  }
+  .stat-card .num {
+    font-family: var(--serif);
+    font-size: 30px; font-weight: 700; line-height: 1.15;
+    color: var(--navy); letter-spacing: .5px;
+  }
+  .stat-card.wide .num { font-size: 42px; }
+  .stat-card .label {
+    margin-top: 8px; font-size: 13px; color: var(--muted);
+  }
+
+  .idea-box {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 16px;
+  }
+  .idea-item {
+    padding: 32px 26px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 2px rgba(20,28,40,.04);
+    transition: transform .35s ease, box-shadow .35s ease;
+  }
+  .idea-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(20,28,40,.12), 0 2px 6px rgba(20,28,40,.06);
+  }
+  .idea-item h3 {
+    font-family: var(--serif);
+    font-size: 17px; color: var(--navy); margin-bottom: 12px;
+    letter-spacing: 1px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .idea-item p { font-size: 14px; color: #3a4149; }
+
+  .feature-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .feature-item {
+    padding: 32px 26px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 2px rgba(20,28,40,.04);
+    transition: transform .35s ease, box-shadow .35s ease;
+  }
+  .feature-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(20,28,40,.12), 0 2px 6px rgba(20,28,40,.06);
+  }
+  .feature-item.lead { grid-column: span 2; }
+  .feature-item h3 {
+    font-family: var(--serif);
+    font-size: 17px; color: var(--navy); margin-bottom: 10px;
+    letter-spacing: .5px;
+  }
+  .feature-item p { font-size: 14px; color: #3a4149; }
+
+  .contact {
+    background: var(--navy);
+    color: #f2eee5;
+    padding: 64px 32px;
+  }
+  .contact-inner { max-width: 1200px; margin: 0 auto; }
+  .contact h2 {
+    font-family: var(--serif);
+    font-size: 22px; font-weight: 700; letter-spacing: 2px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(242,238,229,.2);
+    margin-bottom: 24px;
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .contact-card {
+    padding: 28px 24px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(242,238,229,.16);
+    box-shadow: 0 1px 2px rgba(0,0,0,.12);
+    transition: transform .35s ease, background .35s ease, box-shadow .35s ease;
+  }
+  .contact-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255,255,255,.07);
+    box-shadow: 0 14px 30px rgba(0,0,0,.38), 0 3px 8px rgba(0,0,0,.22);
+  }
+  .contact-card strong {
+    display: block;
+    color: rgba(242,238,229,.5);
+    font-size: 12px;
+    letter-spacing: 2px; margin-bottom: 10px; font-weight: 500;
+  }
+  .contact-card span { font-size: 15px; color: rgba(242,238,229,.92); }
+
+  footer {
+    background: #0a1c2c; color: rgba(242,238,229,.45);
+    padding: 18px 32px; font-size: 12px; letter-spacing: 1px;
+  }
+  footer .foot-inner { max-width: 1200px; margin: 0 auto; }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity .55s ease .2s, transform .55s cubic-bezier(.2,.8,.2,1) .2s;
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { transition: none; opacity: 1; transform: none; }
+    .stat-card, .idea-item, .feature-item, .contact-card { transition: none; }
+    .stat-card:hover, .idea-item:hover, .feature-item:hover, .contact-card:hover { transform: none; }
+  }
+
+  @media (max-width: 900px) {
+    .row { grid-template-columns: 1fr; gap: 28px; padding: 48px 20px; }
+    .row-head { position: static; }
+    .about-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-card.wide { grid-column: span 2; }
+    .idea-box { grid-template-columns: 1fr; }
+    .feature-list { grid-template-columns: 1fr; }
+    .feature-item.lead { grid-column: span 1; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .hero { padding: 56px 20px 48px; }
+    .nav-wrap { padding: 0 20px; height: 54px; }
+    .nav-badge { display: none; }
+    .contact { padding: 48px 20px; }
+    .stat-card, .idea-item, .feature-item { padding: 26px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <div class="logo">
+      <span class="logo-mark">
+        <img src="favicon.ico" alt="福州鳌峰学校标志" decoding="async" width="30" height="30">
+      </span>
+      <span>福州鳌峰学校</span>
+    </div>
+    <div class="nav-right">
+      <a class="nav-item active" href="/">首页</a>
+      <a class="nav-item" href="/forum.html">校园论坛</a>
+      <span class="nav-badge">公办九年一贯制 · 台江区</span>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">承袭鳌峰书院文脉</div>
+    <h1>福州鳌峰学校</h1>
+    <p>公办九年一贯制学校 · 福州市台江区</p>
+    <div class="motto">独占鳌头 · 勇攀高峰</div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="row-head reveal">
+    <div class="row-title">学校概况</div>
+    <div class="row-sub">承袭鳌峰书院文脉<br>打造现代化品牌学校</div>
+  </div>
+  <div class="about-grid">
+    <div class="stat-card wide reveal"><div class="num">2020</div><div class="label">新校区启用</div></div>
+    <div class="stat-card reveal"><div class="num">46.8 亩</div><div class="label">占地面积</div></div>
+    <div class="stat-card reveal"><div class="num">43</div><div class="label">教学班</div></div>
+    <div class="stat-card reveal"><div class="num">2005</div><div class="label">在校学生</div></div>
+    <div class="stat-card reveal"><div class="num">133</div><div class="label">教职员工</div></div>
+    <div class="stat-card wide reveal"><div class="num">40</div><div class="label">硕士及以上教师</div></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="row-head reveal">
+    <div class="row-title">办学理念</div>
+    <div class="row-sub">创品牌学校 · 育品格学生<br>塑品味老师</div>
+  </div>
+  <div class="idea-box">
+    <div class="idea-item reveal">
+      <h3>学校精神</h3>
+      <p>独占鳌头，勇攀高峰。校名承袭鳌峰书院、鳌峰洲文脉，激励师生追求卓越。</p>
+    </div>
+    <div class="idea-item reveal">
+      <h3>校训</h3>
+      <p>明德、砺学、笃行、慎思。注重品德修养、勤奋学习、踏实实践与独立思考。</p>
+    </div>
+    <div class="idea-item reveal">
+      <h3>办学思路</h3>
+      <p>以信息技术为抓手，走科研强校、质量立校之路，推动教育教学高质量发展。</p>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="row-head reveal">
+    <div class="row-title">办学特色</div>
+    <div class="row-sub">以球育人 · 智慧校园</div>
+  </div>
+  <div class="feature-list">
+    <div class="feature-item lead reveal">
+      <h3>传统足球特色校</h3>
+      <p>学校是福州市传统足球特色校，每年春季举办校园足球文化节，通过联赛、征文、绘画等形式丰富足球文化内涵，以球育人、以球启智、以球健体。</p>
+    </div>
+    <div class="feature-item reveal">
+      <h3>智慧校园建设</h3>
+      <p>作为信息技术与学科深度融合基地校、福州市人工智能教育试点校，教室全面配备86寸交互大屏，无线网络全覆盖，建有心健室、VR虚拟实验室、人机对话室等专用空间。</p>
+    </div>
+    <div class="feature-item reveal">
+      <h3>九年一贯制办学</h3>
+      <p>2024年8月小学部正式招生，形成九年一贯制办学格局，为学生提供连贯的成长路径。</p>
+    </div>
+  </div>
+</div>
+
+<div class="contact">
+  <div class="contact-inner">
+    <h2>联系我们</h2>
+    <div class="contact-grid">
+      <div class="contact-card reveal">
+        <strong>学校地址</strong>
+        <span>福州市台江区鳌兴路123号</span>
+      </div>
+      <div class="contact-card reveal">
+        <strong>联系电话</strong>
+        <span>28022207</span>
+      </div>
+      <div class="contact-card reveal">
+        <strong>信息发布</strong>
+        <span>微信公众号「福州鳌峰学校」</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="foot-inner">© <span id="year"></span> 福州鳌峰学校 版权所有</div>
+</footer>
+
+<script>
+  (function () {
+    var items = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    items.forEach(function (el) { io.observe(el); });
+  })();
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // 刷新后回到顶部（若带锚点则保留锚点跳转）
+  window.addEventListener('load', function () {
+    if (!location.hash) window.scrollTo(0, 0);
+  });
+</script>
+
+</body>
+</html>

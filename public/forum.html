@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>校园论坛 · 福州鳌峰学校</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230e2a45'/%3E%3Ctext x='32' y='44' font-size='34' font-family='serif' fill='%23f2eee5' text-anchor='middle'%3E鳌%3C/text%3E%3C/svg%3E">
+<script>history.scrollRestoration = 'manual';</script>
+<style>
+  :root {
+    --ink: #16181d;
+    --navy: #0e2a45;
+    --blue: #1c4e7a;
+    --line: #dcdcd6;
+    --bg: #f0efe9;
+    --paper: #fffefb;
+    --muted: #6d7278;
+    --danger: #9c3a30;
+    --serif: "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", serif;
+    --sans: "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; color: inherit; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+
+  /* ===== 顶栏 ===== */
+  header {
+    position: sticky; top: 0; z-index: 60;
+    background: rgba(240, 239, 233, 0.94);
+    border-bottom: 1px solid rgba(20, 28, 40, .08);
+    box-shadow: 0 1px 0 rgba(20, 28, 40, .05), 0 4px 16px rgba(20, 28, 40, .05);
+    backdrop-filter: blur(8px);
+  }
+  .nav {
+    max-width: 1180px; margin: 0 auto; padding: 0 20px;
+    height: 56px; display: flex; align-items: center; gap: 14px;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 9px;
+    color: var(--navy); font-size: 15px; font-weight: 600; letter-spacing: .5px;
+    white-space: nowrap;
+  }
+  .logo-mark {
+    width: 28px; height: 28px; flex: none;
+    background: var(--navy); color: #f2eee5;
+    border-radius: 50% !important;
+    display: grid; place-items: center;
+    font-family: var(--serif); font-size: 15px; letter-spacing: 0;
+  }
+  .nav-links { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+  .nav-link {
+    padding: 7px 10px; font-size: 13px; color: var(--muted); letter-spacing: .5px;
+    white-space: nowrap;
+  }
+  .nav-link:hover { color: var(--navy); }
+  .nav-link.active { color: var(--navy); font-weight: 600; box-shadow: inset 0 -2px 0 var(--navy); }
+  .nav-user { display: flex; align-items: center; gap: 8px; margin-left: 4px; }
+  .who {
+    font-size: 13px; color: var(--navy); font-weight: 600;
+    max-width: 96px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  /* ===== 按钮 ===== */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 6px; padding: 9px 16px; min-height: 40px;
+    background: var(--navy); color: #fff;
+    font-size: 14px; letter-spacing: .5px;
+    border: 1px solid var(--navy); cursor: pointer;
+    transition: background .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .btn:hover { background: var(--blue); border-color: var(--blue); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .btn.ghost { background: transparent; color: var(--navy); border-color: var(--line); }
+  .btn.ghost:hover { background: var(--paper); border-color: var(--navy); }
+  .btn.small { padding: 5px 10px; min-height: 32px; font-size: 13px; }
+  .btn.danger { background: transparent; border-color: var(--line); color: var(--danger); }
+  .btn.danger:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+  /* ===== 论坛题头 ===== */
+  .masthead { background: var(--navy); color: #f2eee5; padding: 36px 20px 30px; }
+  .mast-inner {
+    max-width: 1180px; margin: 0 auto;
+    display: flex; flex-wrap: wrap; align-items: flex-end;
+    justify-content: space-between; gap: 20px;
+  }
+  .mast-tag { font-size: 11px; letter-spacing: 3px; color: rgba(242, 238, 229, .5); margin-bottom: 10px; }
+  .mast-title {
+    font-family: var(--serif); font-size: 26px; font-weight: 700;
+    letter-spacing: 4px; color: #fff; line-height: 1.35;
+  }
+  .mast-sub { margin-top: 8px; font-size: 13px; letter-spacing: 1px; color: rgba(242, 238, 229, .58); }
+  .mast-stats { display: flex; gap: 26px; }
+  .mast-stats div { text-align: left; }
+  .mast-stats b {
+    display: block; font-family: var(--serif); font-size: 20px;
+    color: #fff; letter-spacing: 1px; line-height: 1.3;
+  }
+  .mast-stats span { font-size: 11px; letter-spacing: 2px; color: rgba(242, 238, 229, .5); }
+
+  /* ===== 主体 ===== */
+  .shell { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 22px 0 60px; }
+  .grid > aside, .grid > main { min-width: 0; }
+
+  .side {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 2px rgba(20, 28, 40, .04);
+    min-width: 0;
+  }
+  .side-head {
+    padding: 13px 16px; border-bottom: 1px solid var(--line);
+    font-family: var(--serif); font-size: 13px; font-weight: 700;
+    letter-spacing: 3px; color: var(--navy);
+  }
+  .cat-list { display: flex; overflow-x: auto; scrollbar-width: none; min-width: 0; width: 100%; }
+  .cat-list::-webkit-scrollbar { display: none; }
+  .cat-item {
+    display: flex; align-items: baseline; gap: 8px;
+    padding: 11px 16px; font-size: 13px; color: var(--ink);
+    border-right: 1px solid var(--line);
+    white-space: nowrap; flex: none;
+    transition: background .18s ease, color .18s ease;
+  }
+  .cat-item .cap { font-size: 11px; color: var(--muted); }
+  .cat-item:hover { background: #f7f6f1; }
+  .cat-item.active { background: var(--navy); color: #fff; }
+  .cat-item.active .cap { color: rgba(255, 255, 255, .65); }
+  .side-foot {
+    padding: 14px 16px; font-size: 12px; color: var(--muted);
+    line-height: 1.7; border-top: 1px solid var(--line);
+  }
+  .side-foot strong { display: block; color: var(--navy); font-weight: 600; margin-bottom: 4px; letter-spacing: 1px; }
+
+  .panel {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 2px rgba(20, 28, 40, .04);
+    min-width: 0;
+  }
+
+  .toolbar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px; border-bottom: 1px solid var(--line); flex-wrap: wrap;
+  }
+  .search {
+    flex: 1 1 160px; min-width: 0; display: flex;
+    border: 1px solid var(--line); background: #fbfaf6;
+  }
+  .search input {
+    flex: 1; min-width: 0; padding: 9px 12px; font-size: 16px;
+    border: none; background: transparent; outline: none;
+  }
+  .search button {
+    border: none; background: transparent; padding: 0 14px;
+    color: var(--muted); cursor: pointer; font-size: 13px; letter-spacing: 1px;
+  }
+  .search button:hover { color: var(--navy); }
+
+  /* ===== 帖子列表 ===== */
+  .thread-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    padding: 15px 16px;
+    border-bottom: 1px solid var(--line);
+    transition: background .18s ease;
+  }
+  .thread-row:hover { background: #f7f6f1; }
+  .thread-row:last-child { border-bottom: none; }
+  .thread-main { min-width: 0; }
+  .thread-title {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    font-size: 15px; font-weight: 600; color: var(--navy); line-height: 1.55;
+  }
+  .thread-title span { overflow-wrap: anywhere; }
+  .flag {
+    font-size: 11px; letter-spacing: 1px; padding: 1px 6px;
+    background: var(--navy); color: #fff; font-weight: 400; flex: none;
+  }
+  .flag.muted { background: #e6e4dc; color: var(--muted); }
+  .thread-meta {
+    margin-top: 5px; font-size: 12px; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center;
+  }
+  .thread-meta .cat { color: var(--blue); }
+  .thread-excerpt {
+    margin-top: 6px; font-size: 13px; color: #5c6268;
+    display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;
+    overflow: hidden; overflow-wrap: anywhere;
+  }
+  .thread-side {
+    text-align: right; font-size: 12px; color: var(--muted);
+    display: flex; flex-direction: column; justify-content: center; gap: 2px;
+    min-width: 44px;
+  }
+  .thread-side b { font-family: var(--serif); font-size: 15px; color: var(--navy); display: block; line-height: 1.2; }
+
+  .pager {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: 16px; font-size: 13px; color: var(--muted);
+    border-top: 1px solid var(--line);
+  }
+
+  .empty, .loading {
+    padding: 56px 20px; text-align: center; color: var(--muted); font-size: 13px; letter-spacing: 1px;
+  }
+  .empty strong { display: block; font-family: var(--serif); font-size: 16px; color: var(--navy); margin-bottom: 6px; letter-spacing: 2px; }
+
+  /* ===== 帖子详情 ===== */
+  .post-head { padding: 20px 18px 16px; border-bottom: 1px solid var(--line); }
+  .crumb { font-size: 12px; color: var(--muted); margin-bottom: 10px; letter-spacing: .5px; }
+  .crumb a:hover { color: var(--navy); }
+  .post-title {
+    font-family: var(--serif); font-size: 21px; font-weight: 700;
+    line-height: 1.45; color: var(--navy); letter-spacing: .5px;
+    overflow-wrap: anywhere;
+  }
+  .post-meta {
+    margin-top: 10px; font-size: 12px; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 4px 12px;
+  }
+  .post-body {
+    padding: 22px 18px 26px;
+    font-size: 15px; line-height: 1.9; color: #262b31;
+    white-space: pre-wrap; overflow-wrap: anywhere;
+  }
+  .post-actions {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 0 18px 18px;
+  }
+
+  .like-btn.liked { background: #efe7dd; border-color: var(--navy); color: var(--navy); }
+
+  .reply-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    font-family: var(--serif); font-size: 13px; letter-spacing: 2px; color: var(--navy);
+  }
+  .reply { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 16px 18px; border-bottom: 1px solid var(--line); }
+  .reply-meta { font-size: 12px; color: var(--muted); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .reply-meta .floor { color: var(--blue); letter-spacing: 1px; }
+  .reply-meta .name { color: var(--ink); font-weight: 600; }
+  .reply-body { font-size: 14px; line-height: 1.85; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .reply-admin { margin-left: auto; }
+  .reply-admin button {
+    background: none; border: none; color: var(--muted); font-size: 11px; cursor: pointer; padding: 2px 4px;
+  }
+  .reply-admin button:hover { color: var(--danger); }
+
+  .reply-form { padding: 18px; border-top: 1px solid var(--line); }
+  .reply-form textarea, .compose textarea, .compose input, .field input, .field select {
+    width: 100%; padding: 11px 12px; font-size: 16px;
+    background: #fbfaf6; border: 1px solid var(--line); outline: none;
+    transition: border-color .18s ease;
+  }
+  textarea { resize: vertical; line-height: 1.8; min-height: 96px; }
+  .reply-form textarea:focus, .compose textarea:focus, .compose input:focus, .field input:focus, .field select:focus { border-color: var(--navy); background: #fff; }
+  .reply-form .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
+  .hint { font-size: 12px; color: var(--muted); }
+  .login-tip { padding: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+  .login-tip .btn { margin-left: 8px; }
+
+  /* ===== 发帖 ===== */
+  .compose { padding: 20px 18px 24px; }
+  .compose h2 { font-family: var(--serif); font-size: 18px; color: var(--navy); letter-spacing: 2px; margin-bottom: 16px; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 12px; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
+  .compose .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .compose .count { font-size: 12px; color: var(--muted); }
+
+  /* ===== 弹层 ===== */
+  .overlay {
+    position: fixed; inset: 0; z-index: 90;
+    background: rgba(10, 20, 32, .55);
+    display: grid; place-items: center; padding: 20px;
+  }
+  .overlay[hidden] { display: none; }
+  .modal {
+    width: 100%; max-width: 400px; background: var(--paper);
+    border: 1px solid var(--line); box-shadow: 0 20px 50px rgba(10, 20, 32, .3);
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px; border-bottom: 1px solid var(--line);
+  }
+  .modal-head h3 { font-family: var(--serif); font-size: 15px; letter-spacing: 2px; color: var(--navy); }
+  .close { background: none; border: none; font-size: 18px; color: var(--muted); cursor: pointer; padding: 4px 8px; }
+  .close:hover { color: var(--navy); }
+  .tabs { display: flex; border-bottom: 1px solid var(--line); }
+  .tab {
+    flex: 1; padding: 11px; background: none; border: none; cursor: pointer;
+    font-size: 13px; color: var(--muted); letter-spacing: 1px;
+  }
+  .tab.active { color: var(--navy); font-weight: 600; box-shadow: inset 0 -2px 0 var(--navy); }
+  .modal-body { padding: 18px; }
+  .modal-body .field { margin-bottom: 14px; }
+  .modal-body .btn { width: 100%; margin-top: 4px; }
+  .modal-tip { font-size: 12px; color: var(--muted); margin-top: 12px; line-height: 1.7; }
+  .modal-note { font-size: 13px; color: var(--danger); min-height: 20px; margin-top: 10px; }
+
+  /* ===== 轻提示 ===== */
+  .toast {
+    position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%) translateY(12px);
+    background: var(--navy); color: #f2eee5; font-size: 13px;
+    padding: 11px 20px; letter-spacing: .5px; z-index: 100;
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease, transform .25s ease;
+    max-width: calc(100vw - 40px);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  footer { background: #0a1c2c; color: rgba(242, 238, 229, .45); padding: 18px 20px; font-size: 12px; letter-spacing: 1px; }
+  footer .foot-inner { max-width: 1180px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px 18px; }
+
+  /* ===== 窄屏修正 ===== */
+  @media (max-width: 959px) {
+    .grid.focus-mode > aside { display: none; }
+    body.thread-view .masthead { display: none; }
+  }
+  @media (max-width: 600px) {
+    .nav { padding: 0 12px; gap: 6px; height: 52px; }
+    .home-link { display: none; }
+    .logo-text { font-size: 14px; }
+    .nav-link { padding: 7px 8px; font-size: 13px; }
+    .nav-user { gap: 6px; margin-left: 2px; }
+    .who { max-width: 52px; font-size: 12px; }
+    .nav-user .btn.small { padding: 5px 9px; }
+    .masthead { padding: 28px 16px 24px; }
+    .mast-title { font-size: 24px; letter-spacing: 3px; }
+    .mast-stats { gap: 22px; }
+    .shell { padding: 0 0; }
+    .grid { padding: 16px 0 48px; gap: 14px; }
+    .side { border-left: none; border-right: none; }
+    .panel { border-left: none; border-right: none; }
+    .thread-row { padding: 14px 16px; }
+    .toast { bottom: 20px; }
+  }
+
+  /* ===== 宽屏 ===== */
+  @media (min-width: 960px) {
+    .grid { grid-template-columns: 224px minmax(0, 1fr); gap: 24px; padding: 30px 0 72px; }
+    .cat-list { flex-direction: column; overflow: visible; }
+    .cat-item { border-right: none; border-bottom: 1px solid var(--line); justify-content: space-between; }
+    .cat-item:last-child { border-bottom: none; }
+    .nav { padding: 0 24px; }
+    .shell { padding: 0 24px; }
+    .masthead { padding: 44px 24px 36px; }
+    .thread-row { padding: 17px 20px; }
+    .post-head, .post-body, .post-actions, .reply-head, .reply, .reply-form, .login-tip { padding-left: 24px; padding-right: 24px; }
+    .compose { padding: 26px 24px 30px; }
+  }
+  @media (min-width: 1180px) {
+    .mast-title { font-size: 30px; }
+    .post-title { font-size: 23px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="logo" href="/">
+      <span class="logo-mark">鳌</span>
+      <span class="logo-text">福州鳌峰学校</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link home-link" href="/">首页</a>
+      <a class="nav-link active" href="/forum.html">校园论坛</a>
+      <div class="nav-user" id="navUser"></div>
+    </div>
+  </div>
+</header>
+
+<section class="masthead">
+  <div class="mast-inner">
+    <div>
+      <div class="mast-tag">CAMPUS FORUM · 鳌峰</div>
+      <h1 class="mast-title">校园论坛</h1>
+      <p class="mast-sub">鳌峰人的线上会客厅 · 有问题就问，有想法就说</p>
+    </div>
+    <div class="mast-stats" id="mastStats"></div>
+  </div>
+</section>
+
+<div class="shell">
+  <div class="grid">
+    <aside>
+      <div class="side">
+        <div class="side-head">版块导航</div>
+        <div class="cat-list" id="catList"></div>
+      </div>
+      <div class="side" style="margin-top:16px">
+        <div class="side-head">发帖须知</div>
+        <div class="side-foot">
+          <strong>好好说话</strong>
+          不人身攻击、不刷屏、不泄露同学隐私。<br>涉及学校事务的正式信息，以官方通知为准。
+        </div>
+      </div>
+    </aside>
+    <main class="panel" id="main"></main>
+  </div>
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <span>© <span id="year"></span> 福州鳌峰学校 版权所有</span>
+    <span>校园论坛 · 内容仅代表发帖人个人观点</span>
+  </div>
+</footer>
+
+<div class="overlay" id="authOverlay" hidden>
+  <div class="modal" id="authModal"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var state = {
+    user: null,
+    cats: [],
+    stats: {},
+    q: '',
+    currentCat: '',
+    replyLoaded: 0,
+    threadData: null
+  };
+
+  var main = document.getElementById('main');
+  var catList = document.getElementById('catList');
+  var navUser = document.getElementById('navUser');
+  var mastStats = document.getElementById('mastStats');
+  var authOverlay = document.getElementById('authOverlay');
+  var authModal = document.getElementById('authModal');
+  var toastEl = document.getElementById('toast');
+
+  /* ---------- 工具 ---------- */
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function fmtTime(ts) {
+    if (!ts) return '';
+    var now = Date.now() / 1000;
+    var diff = now - ts;
+    if (diff < 60) return '刚刚';
+    if (diff < 3600) return Math.floor(diff / 60) + ' 分钟前';
+    if (diff < 86400) return Math.floor(diff / 3600) + ' 小时前';
+    if (diff < 86400 * 7) return Math.floor(diff / 86400) + ' 天前';
+    var d = new Date(ts * 1000);
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  }
+
+  function fmtDate(ts) {
+    var d = new Date(ts * 1000);
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' +
+      pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { toastEl.classList.remove('show'); }, 2400);
+  }
+
+  function api(path, opts) {
+    opts = opts || {};
+    var init = {
+      method: opts.method || 'GET',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' }
+    };
+    if (opts.body) init.body = JSON.stringify(opts.body);
+    return fetch('/api/' + path, init).then(function (res) {
+      return res.json().catch(function () { return { error: '服务器返回异常（HTTP ' + res.status + '）' }; })
+        .then(function (data) {
+          if (!res.ok) throw new Error(data.error || '请求失败');
+          return data;
+        });
+    });
+  }
+
+  /* ---------- 会话与导航 ---------- */
+
+  function renderNav() {
+    if (state.user) {
+      navUser.innerHTML =
+        '<span class="who" title="' + esc(state.user.username) + '">' + esc(state.user.username) +
+        (state.user.role === 'admin' ? ' · 管理员' : '') + '</span>' +
+        '<button class="btn ghost small" id="logoutBtn">退出</button>';
+      document.getElementById('logoutBtn').addEventListener('click', logout);
+    } else {
+      navUser.innerHTML = '<button class="btn small" id="loginBtn">登录 / 注册</button>';
+      document.getElementById('loginBtn').addEventListener('click', function () { openAuth('login'); });
+    }
+  }
+
+  function logout() {
+    api('logout', { method: 'POST' }).then(function () {
+      state.user = null;
+      renderNav();
+      toast('已退出登录');
+      route();
+    }).catch(function (e) { toast(e.message); });
+  }
+
+  function renderStats() {
+    var s = state.stats || {};
+    mastStats.innerHTML =
+      '<div><b>' + (s.threads || 0) + '</b><span>帖子</span></div>' +
+      '<div><b>' + (s.replies || 0) + '</b><span>回复</span></div>' +
+      '<div><b>' + (s.members || 0) + '</b><span>成员</span></div>';
+  }
+
+  function renderCats(activeSlug) {
+    var html = '<a class="cat-item' + (activeSlug === '' ? ' active' : '') + '" href="#/">' +
+      '<span>全部版块</span></a>';
+    state.cats.forEach(function (c) {
+      html += '<a class="cat-item' + (activeSlug === c.slug ? ' active' : '') + '" href="#/c/' + c.slug + '">' +
+        '<span>' + esc(c.name) + '</span><span class="cap">' + c.thread_count + '</span></a>';
+    });
+    catList.innerHTML = html;
+  }
+
+  /* ---------- 列表视图 ---------- */
+
+  function showList(slug, q) {
+    document.querySelector('.grid').classList.remove('focus-mode');
+    document.body.classList.remove('thread-view');
+    state.currentCat = slug || '';
+    state.q = q == null ? state.q : q;
+    renderCats(state.currentCat);
+
+    var title = '全部版块';
+    var desc = '最新的讨论都在这里';
+    if (state.currentCat) {
+      var c = state.cats.filter(function (x) { return x.slug === state.currentCat; })[0];
+      if (c) { title = c.name; desc = c.description; }
+    }
+
+    main.innerHTML =
+      '<div class="toolbar">' +
+        '<div class="search"><input id="searchInput" type="search" placeholder="搜索帖子标题或内容" value="' + esc(state.q) + '" maxlength="40"><button id="searchBtn">搜索</button></div>' +
+        '<button class="btn small" id="newBtn">发帖</button>' +
+      '</div>' +
+      '<div class="post-head" style="border-bottom:1px solid var(--line)">' +
+        '<div class="crumb">校园论坛 / ' + esc(title) + '</div>' +
+        '<h2 class="post-title" style="font-size:19px;letter-spacing:1px">' + esc(title) + '</h2>' +
+        '<div class="post-meta"><span>' + esc(desc) + '</span></div>' +
+      '</div>' +
+      '<div id="listBody"><div class="loading">正在加载…</div></div>';
+
+    document.getElementById('newBtn').addEventListener('click', function () {
+      location.hash = '#/new' + (state.currentCat ? '?cat=' + state.currentCat : '');
+    });
+    var si = document.getElementById('searchInput');
+    function doSearch() {
+      state.q = si.value.trim();
+      loadList(1);
+    }
+    document.getElementById('searchBtn').addEventListener('click', doSearch);
+    si.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
+
+    loadList(1);
+  }
+
+  function loadList(page) {
+    var body = document.getElementById('listBody');
+    if (!body) return;
+    body.innerHTML = '<div class="loading">正在加载…</div>';
+
+    var qs = 'threads?page=' + page + (state.currentCat ? '&cat=' + encodeURIComponent(state.currentCat) : '') +
+      (state.q ? '&q=' + encodeURIComponent(state.q) : '');
+
+    api(qs).then(function (data) {
+      if (!data.items.length) {
+        body.innerHTML = '<div class="empty"><strong>' + (state.q ? '没有找到相关帖子' : '这里还没有帖子') + '</strong>' +
+          (state.q ? '换个关键词试试' : '登录后发第一帖，给论坛开个头') + '</div>';
+        return;
+      }
+
+      var html = '';
+      data.items.forEach(function (t) {
+        var flags = '';
+        if (t.pinned) flags += '<span class="flag">置顶</span>';
+        if (t.locked) flags += '<span class="flag muted">已锁定</span>';
+        var excerpt = t.last_reply || '';
+        html +=
+          '<a class="thread-row" href="#/t/' + t.id + '">' +
+            '<div class="thread-main">' +
+              '<div class="thread-title">' + flags + '<span>' + esc(t.title) + '</span></div>' +
+              '<div class="thread-meta">' +
+                '<span class="cat">' + esc(t.cat_name) + '</span>' +
+                '<span>' + esc(t.username) + '</span>' +
+                '<span>' + fmtTime(t.updated_at) + '</span>' +
+              '</div>' +
+              (excerpt ? '<div class="thread-excerpt">' + esc(excerpt.replace(/\s+/g, ' ')) + '</div>' : '') +
+            '</div>' +
+            '<div class="thread-side"><b>' + t.reply_count + '</b><span>回复</span></div>' +
+          '</a>';
+      });
+
+      var pages = Math.max(1, Math.ceil(data.total / data.size));
+      if (pages > 1) {
+        html += '<div class="pager">' +
+          (page > 1 ? '<button class="btn ghost small" data-page="' + (page - 1) + '">上一页</button>' : '') +
+          '<span>' + page + ' / ' + pages + ' · 共 ' + data.total + ' 帖</span>' +
+          (page < pages ? '<button class="btn ghost small" data-page="' + (page + 1) + '">下一页</button>' : '') +
+          '</div>';
+      }
+
+      body.innerHTML = html;
+      body.querySelectorAll('[data-page]').forEach(function (b) {
+        b.addEventListener('click', function () { loadList(parseInt(b.dataset.page, 10)); });
+      });
+    }).catch(function (e) {
+      body.innerHTML = '<div class="empty"><strong>加载失败</strong>' + esc(e.message) + '</div>';
+    });
+  }
+
+  /* ---------- 帖子视图 ---------- */
+
+  function showThread(id, page) {
+    renderCats('');
+    document.querySelector('.grid').classList.add('focus-mode');
+    document.body.classList.add('thread-view');
+    main.innerHTML = '<div class="loading">正在打开帖子…</div>';
+    page = page || 1;
+
+    api('thread?id=' + encodeURIComponent(id) + '&page=' + page).then(function (data) {
+      var t = data.thread;
+      state.threadData = data;
+
+      var isAdmin = state.user && state.user.role === 'admin';
+      var adminBtns = isAdmin
+        ? '<button class="btn ghost small" data-admin="pin">' + (t.pinned ? '取消置顶' : '置顶') + '</button>' +
+          '<button class="btn ghost small" data-admin="lock">' + (t.locked ? '解除锁定' : '锁定') + '</button>' +
+          '<button class="btn danger small" data-admin="deleteThread">删除</button>'
+        : '';
+
+      main.innerHTML =
+        '<div class="post-head">' +
+          '<div class="crumb"><a href="#/">校园论坛</a> / <a href="#/c/' + esc(t.cat_slug) + '">' + esc(t.cat_name) + '</a></div>' +
+          '<h1 class="post-title">' + (t.pinned ? '<span class="flag" style="vertical-align:middle;margin-right:8px">置顶</span>' : '') + esc(t.title) + '</h1>' +
+          '<div class="post-meta">' +
+            '<span>' + esc(t.username) + (t.author_role === 'admin' ? '（管理员）' : '') + '</span>' +
+            '<span>' + fmtDate(t.created_at) + '</span>' +
+            '<span>' + t.views + ' 次浏览</span>' +
+            '<span>' + t.reply_count + ' 条回复</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="post-body">' + esc(t.content) + '</div>' +
+        '<div class="post-actions">' +
+          '<button class="btn ghost small like-btn' + (t.liked ? ' liked' : '') + '" id="likeBtn">赞 <span id="likeCount">' + (t.like_count || 0) + '</span></button>' +
+          '<button class="btn ghost small" id="toReply">写回复</button>' +
+          (t.locked ? '<span class="flag muted" style="align-self:center">该帖已锁定</span>' : '') +
+          adminBtns +
+        '</div>' +
+        '<div class="reply-head"><span>全部回复</span><span>' + t.reply_count + '</span></div>' +
+        '<div id="replyList">' + renderReplies(data.replies) + '</div>' +
+        (state.user
+          ? (t.locked ? '' : '<div class="reply-form" id="replyForm" style="display:none">' +
+              '<textarea id="replyText" maxlength="4000" placeholder="说说你的看法…"></textarea>' +
+              '<div class="row"><span class="hint">请友善交流，回复不可编辑</span>' +
+              '<button class="btn" id="replySubmit">发布回复</button></div></div>')
+          : '<div class="login-tip">登录后可以回复和点赞。<button class="btn small" id="loginTipBtn">登录 / 注册</button></div>');
+
+      var likeBtn = document.getElementById('likeBtn');
+      likeBtn.addEventListener('click', function () {
+        if (!state.user) return openAuth('login');
+        api('like', { method: 'POST', body: { threadId: t.id } }).then(function (res) {
+          document.getElementById('likeCount').textContent = res.count;
+          likeBtn.classList.toggle('liked', res.liked);
+        }).catch(function (e) { toast(e.message); });
+      });
+
+      var toReply = document.getElementById('toReply');
+      if (toReply) toReply.addEventListener('click', function () {
+        if (!state.user) return openAuth('login');
+        var form = document.getElementById('replyForm');
+        if (!form) return;
+        form.style.display = 'block';
+        document.getElementById('replyText').focus();
+        form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+
+      var submit = document.getElementById('replySubmit');
+      if (submit) submit.addEventListener('click', function () {
+        var text = document.getElementById('replyText').value.trim();
+        if (!text) return toast('回复内容不能为空');
+        submit.disabled = true;
+        api('reply', { method: 'POST', body: { threadId: t.id, content: text } }).then(function () {
+          toast('回复已发布');
+          setTimeout(function () { showThread(t.id, page); }, 300);
+        }).catch(function (e) { submit.disabled = false; toast(e.message); });
+      });
+
+      var loginTipBtn = document.getElementById('loginTipBtn');
+      if (loginTipBtn) loginTipBtn.addEventListener('click', function () { openAuth('login'); });
+
+      main.querySelectorAll('[data-del]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          if (!confirm('确定删除这条回复？')) return;
+          api('admin', { method: 'POST', body: { action: 'deleteReply', replyId: parseInt(b.dataset.del, 10) } })
+            .then(function () { toast('回复已删除'); setTimeout(function () { showThread(t.id, 1); }, 200); })
+            .catch(function (e) { toast(e.message); });
+        });
+      });
+
+      main.querySelectorAll('[data-admin]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var action = b.dataset.admin;
+          if (action === 'deleteThread' && !confirm('确定删除这篇帖子？回复也会一并删除，且无法恢复。')) return;
+          api('admin', { method: 'POST', body: { action: action, threadId: t.id } }).then(function () {
+            toast('操作成功');
+            if (action === 'deleteThread') location.hash = '#/c/' + t.cat_slug;
+            else setTimeout(function () { showThread(t.id, 1); }, 200);
+          }).catch(function (e) { toast(e.message); });
+        });
+      });
+    }).catch(function (e) {
+      main.innerHTML = '<div class="empty"><strong>打开失败</strong>' + esc(e.message) +
+        '<div style="margin-top:14px"><a class="btn ghost small" href="#/">返回论坛</a></div></div>';
+    });
+  }
+
+  function renderReplies(replies) {
+    if (!replies.length) return '<div class="empty" style="padding:36px 20px">还没有回复，来做第一个说话的人</div>';
+    return replies.map(function (r) {
+      var isAdmin = state.user && state.user.role === 'admin';
+      return '<div class="reply">' +
+        '<div class="reply-meta">' +
+          '<span class="floor">' + (r.floor + 1) + ' 楼</span>' +
+          '<span class="name">' + esc(r.username) + (r.role === 'admin' ? '（管理员）' : '') + '</span>' +
+          '<span>' + fmtDate(r.created_at) + '</span>' +
+          (isAdmin ? '<span class="reply-admin"><button data-del="' + r.id + '">删除</button></span>' : '') +
+        '</div>' +
+        '<div class="reply-body">' + esc(r.content) + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  /* ---------- 发帖视图 ---------- */
+
+  function showComposer() {
+    var catFromHash = (location.hash.split('?')[1] || '');
+    var presetCat = '';
+    if (catFromHash) {
+      var sp = new URLSearchParams(catFromHash);
+      presetCat = sp.get('cat') || '';
+    }
+    showComposerWith(presetCat || state.currentCat);
+  }
+
+  function showComposerWith(presetCat) {
+    document.querySelector('.grid').classList.remove('focus-mode');
+    document.body.classList.remove('thread-view');
+    renderCats(presetCat);
+    if (!state.user) {
+      main.innerHTML = '<div class="empty"><strong>发帖需要登录</strong>请先登录或注册一个账号' +
+        '<div style="margin-top:16px"><button class="btn small" id="needLogin">登录 / 注册</button></div></div>';
+      document.getElementById('needLogin').addEventListener('click', function () { openAuth('login'); });
+      return;
+    }
+
+    if (!presetCat) presetCat = 'study';
+    if (presetCat === 'notices' && state.user.role !== 'admin') presetCat = 'study';
+
+    var opts = state.cats.map(function (c) {
+      return '<option value="' + c.slug + '"' + (presetCat === c.slug ? ' selected' : '') + '>' +
+        esc(c.name) + (c.slug === 'notices' && state.user.role !== 'admin' ? '（仅管理员）' : '') + '</option>';
+    }).join('');
+
+    main.innerHTML =
+      '<div class="compose">' +
+        '<h2>发布新帖</h2>' +
+        '<div class="field"><label>选择版块</label><select id="cCat">' + opts + '</select></div>' +
+        '<div class="field"><label>标题</label><input id="cTitle" maxlength="80" placeholder="一句话说清楚你要聊什么"></div>' +
+        '<div class="field"><label>正文</label><textarea id="cBody" maxlength="8000" style="min-height:200px" placeholder="把情况写清楚，方便别人理解和回复"></textarea></div>' +
+        '<div class="row"><span class="hint">发帖后不可编辑，请检查后再发布</span><button class="btn" id="cSubmit">发布</button></div>' +
+      '</div>';
+
+    document.getElementById('cSubmit').addEventListener('click', function () {
+      var cat = document.getElementById('cCat').value;
+      var title = document.getElementById('cTitle').value.trim();
+      var content = document.getElementById('cBody').value.trim();
+      if (title.length < 4) return toast('标题至少 4 个字');
+      if (content.length < 5) return toast('正文太短了，多写两句');
+      var btn = this;
+      btn.disabled = true;
+      api('post', { method: 'POST', body: { cat: cat, title: title, content: content } }).then(function (res) {
+        toast('发布成功');
+        location.hash = '#/t/' + res.id;
+      }).catch(function (e) { btn.disabled = false; toast(e.message); });
+    });
+  }
+
+  /* ---------- 登录注册 ---------- */
+
+  function openAuth(mode) {
+    renderAuth(mode || 'login');
+    authOverlay.hidden = false;
+  }
+
+  function closeAuth() {
+    authOverlay.hidden = true;
+    authModal.innerHTML = '';
+  }
+
+  function renderAuth(mode) {
+    var isLogin = mode === 'login';
+    authModal.innerHTML =
+      '<div class="modal-head"><h3>' + (isLogin ? '登录' : '注册') + '</h3>' +
+        '<button class="close" id="authClose" aria-label="关闭">×</button></div>' +
+      '<div class="tabs"><button class="tab' + (isLogin ? ' active' : '') + '" data-mode="login">登录</button>' +
+        '<button class="tab' + (isLogin ? '' : ' active') + '" data-mode="register">注册</button></div>' +
+      '<div class="modal-body">' +
+        '<div class="field"><label>用户名</label><input id="aUser" maxlength="16" autocomplete="username" placeholder="2–16 位，中英文、数字、下划线"></div>' +
+        '<div class="field"><label>密码</label><input id="aPass" type="password" maxlength="32" autocomplete="' + (isLogin ? 'current-password' : 'new-password') + '" placeholder="6–32 位"></div>' +
+        (isLogin ? '' : '<div class="field"><label>管理员密钥（选填）</label><input id="aKey" placeholder="留空即普通成员"></div>') +
+        '<button class="btn" id="authSubmit">' + (isLogin ? '登录' : '注册并登录') + '</button>' +
+        '<div class="modal-note" id="authNote"></div>' +
+        '<div class="modal-tip">论坛仅用于校园内部交流，请勿发布个人隐私与不实信息。</div>' +
+      '</div>';
+
+    document.getElementById('authClose').addEventListener('click', closeAuth);
+    authModal.querySelectorAll('.tab').forEach(function (t) {
+      t.addEventListener('click', function () { renderAuth(t.dataset.mode); });
+    });
+    document.getElementById('authSubmit').addEventListener('click', function () {
+      var username = document.getElementById('aUser').value.trim();
+      var password = document.getElementById('aPass').value;
+      var note = document.getElementById('authNote');
+      note.textContent = '';
+      if (!username || !password) { note.textContent = '用户名和密码都要填'; return; }
+
+      var btn = this;
+      btn.disabled = true;
+      var body = { username: username, password: password };
+      if (!isLogin) {
+        var keyEl = document.getElementById('aKey');
+        if (keyEl && keyEl.value.trim()) body.adminKey = keyEl.value.trim();
+      }
+
+      api(isLogin ? 'login' : 'register', { method: 'POST', body: body }).then(function (res) {
+        state.user = res.user;
+        renderNav();
+        closeAuth();
+        toast(isLogin ? '欢迎回来，' + res.user.username : '注册成功，欢迎你');
+        route();
+      }).catch(function (e) {
+        btn.disabled = false;
+        note.textContent = e.message;
+      });
+    });
+  }
+
+  authOverlay.addEventListener('click', function (e) {
+    if (e.target === authOverlay) closeAuth();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !authOverlay.hidden) closeAuth();
+  });
+
+  /* ---------- 路由 ---------- */
+
+  function route() {
+    var hash = location.hash.replace(/^#/, '') || '/';
+    var qIndex = hash.indexOf('?');
+    var pathPart = qIndex > -1 ? hash.slice(0, qIndex) : hash;
+    var parts = pathPart.split('/').filter(Boolean);
+
+    if (parts[0] === 't' && parts[1]) return showThread(parts[1], 1);
+    if (parts[0] === 'new') return showComposer();
+    if (parts[0] === 'c' && parts[1]) return showList(parts[1], '');
+    return showList('', '');
+  }
+
+  /* ---------- 启动 ---------- */
+
+  function boot() {
+    document.getElementById('year').textContent = new Date().getFullYear();
+    api('meta').then(function (data) {
+      state.cats = data.categories || [];
+      state.stats = data.stats || {};
+      renderStats();
+    }).catch(function (e) {
+      main.innerHTML = '<div class="empty"><strong>后端未就绪</strong>' + esc(e.message) + '</div>';
+    });
+
+    api('me').then(function (data) {
+      state.user = data.user;
+      renderNav();
+      route();
+    }).catch(function () {
+      state.user = null;
+      renderNav();
+      route();
+    });
+
+    window.addEventListener('hashchange', route);
+  }
+
+  boot();
+})();
+</script>
+
+</body>
+</html>
